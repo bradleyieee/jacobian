@@ -12,10 +12,8 @@ using namespace Jacobian;
 
 /*
 * Software delay at clock speed of specific device.
-* @perams
+* @params
 * 		double s: The time (in seconds) the delay should wait.
-* @return
-* 		void
 */
 void Controller::waitForSeconds(double s) {
 	clock_t start = clock();
@@ -31,8 +29,6 @@ void Controller::waitForSeconds(double s) {
  * @params
  * 		string tag: The prefix to log object.
  * 		T obj: General template for object to be logged.
- * @return
- * 		void
  */
 template <typename T>
 void Controller::log(const string tag, const T obj) {
