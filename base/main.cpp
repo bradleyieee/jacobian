@@ -15,7 +15,7 @@ using namespace std;
 #define vOUT 0 // Okay, Jacobian doesn't understand the ACTUAL pinout system. It's all relative. See log.txt.
 
 // COMPILATION: 
-	// $ g++ jacobian.cpp main.cpp -o build -lwiringPi
+	// $ g++ jacobian.cpp main.cpp -o build -pthread -lwiringPi
 	// $ sudo ./build
 
 // Main method begins here.
@@ -39,6 +39,8 @@ int main(void) {
 		
 		pi.waitForSeconds(delay);
 	}
+
+	pi.kill();
 	
 	return 0;
 }
