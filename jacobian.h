@@ -11,6 +11,7 @@
  * @since 1.0.0
  */
 
+#include <bits/stdc++.h>
 #include <iostream>
 #include <vector>
 #include <math.h>
@@ -18,6 +19,8 @@
 #include <time.h>
 #include <thread>
 using namespace std;
+
+#define VERSION "1.4.0"
 
 /**
 * The Jacobian namespace encapsulates three main deliniations of tools: general utilities, 
@@ -61,8 +64,9 @@ namespace jacobian {
 		void log(T); // Without tag.
 
 	float timeToDutyCycle(int, float);
-
 	void waitForSeconds(double);
+	
+	vector<string> tokenize(string, char);
 	
 	/*******************
 	Pulse Width Modulation generator

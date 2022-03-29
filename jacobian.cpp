@@ -7,6 +7,7 @@
 
 #include "jacobian.h"
 #include <wiringPi.h>
+#include <chrono>
 using namespace jacobian;
 
 /*******************
@@ -17,7 +18,7 @@ General utilities
 template <typename T>
 void jacobian::log(const string tag, const T obj) {
 	cout << "JacobianOS [Debug Log] @ t = " << clock() 
-		<< ": " << tag << ": " << obj << endl;
+		<< ": [" << tag << "] " << obj << endl;
 	return;
 }
 template <typename T>
@@ -56,19 +57,27 @@ float jacobian::radixShift(float si, int shift) {
 }
 	
 /**
- * Simple delay using system clock.
+ * Simple delay using system clock in the calling thread.
  * 
  * @params
  * 	double s: The time to wait, in seconds.
  * @return void
  */
 void jacobian::waitForSeconds(double s) {
-	clock_t start = clock();
-	while(true) {
-		if((clock() - start) / (double)CLOCKS_PER_SEC > s)
-			break;
-	}	
+	static unsigned long long int micros;
+	micros = (int)(s * 1000000);
+	this_thread::sleep_for(chrono::microseconds(micros));
 	return;
+}
+
+// Return a list of strings seperated from every occurence of a specified delimiter.
+vector<string> jacobian::tokenize(string in, char delimiter) {
+	vector<string> ret;
+	stringstream check(in);
+	string intermediate;
+	while(getline(check, intermediate, delimiter))
+		ret.push_back(intermediate);
+	return ret;
 }
 
 /*******************
@@ -118,7 +127,7 @@ bool Controller::isOverridden(void) {
 // Set the state of the Controller override.
 void Controller::Override(bool verdict) {
 	this->overriden = verdict;
-	if(verdict) log("Success", "The Controller is no longer in control of the RC car.")
+	if(verdict) log("Success", "The Controller is no longer in control of the RC car.");
 	else log("Success", "The Controller is now in direct control of the RC car.");
 	return;
 }

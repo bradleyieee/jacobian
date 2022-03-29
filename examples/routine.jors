@@ -1,0 +1,33 @@
+log Example routine.
+
+log Drive forward for five seconds...
+drive f 23
+wait 5.0
+
+log Break for two seconds...
+break
+wait 2.0
+
+log Reverse for four and a half seconds...
+drive b 30
+wait 4.5
+
+log Steer to left...
+steer 1200
+wait 1.0
+
+log Steer to right...
+steer 2000
+wait 2.0
+
+log Steer center and break
+steer 1600
+break
+
+log Drive forwards for 3.325 seconds...
+drive f 23
+wait 3.325
+
+log Final break for two seconds...
+break
+wait 2.00
