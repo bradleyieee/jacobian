@@ -332,7 +332,7 @@ static void command(Controller & c, PWM & drive, PWM & steer) {
 			cout << "[NOTE] Please enter commands and arguments with single spaces in between, no commas or other delimiters." << endl << endl;
 			cout << "	help (no args): General help command. Use when the format of commands is forgotten." << endl;
 			cout << "	log (no args): This will toggle the debug command logging." << endl;
-			cout << "	load (path_to_routine): Load a *.jors file to automate commands. JORS documentation is coming soon." << endl;
+			cout << "	load (path_to_routine): Load a *.jors file to automate commands. JORS documentation outlined on github." << endl;
 			cout << "	stop (no args): Terminate entire application." << endl;
 			cout << "	drive ('f' or 'b', 0 - 100): Translate the car forwards or backwards specifying direction and percentage max speed." << endl;
 			cout << "	break (no args): Stop the car from translating instantaneously." << endl;
