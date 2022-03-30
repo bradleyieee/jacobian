@@ -1,5 +1,5 @@
 /**
- * JacobianOS implementation file.
+ * Jacobian library implementation file.
  * 
  * @author Ian Wilkey (iwilkey)
  * @since 1.0.0
@@ -16,13 +16,13 @@ General utilities
 
 // General logging. These methods print a simple message to the terminal during runtime.
 template <typename T>
-void jacobian::log(const string tag, const T obj) {
+void jacobian::log(string tag, T obj) {
 	cout << "JacobianOS [Debug Log] @ t = " << clock() 
 		<< ": [" << tag << "] " << obj << endl;
 	return;
 }
 template <typename T>
-void jacobian::log(const T obj) {
+void jacobian::log(T obj) {
 	cout << "JacobianOS [Debug Log] @ t = " << clock() 
 		<< ": " << obj << endl;
 	return;
@@ -70,7 +70,14 @@ void jacobian::waitForSeconds(double s) {
 	return;
 }
 
-// Return a list of strings seperated from every occurence of a specified delimiter.
+/**
+ * Return a list of strings seperated from every occurence of a specified delimiter.
+ * 
+ * @params
+ * 	string in: The string to be parsed through.
+ * 	char delimiter: The char to cut the input string by.
+ * @return a list of tokens in the parsed string cut by the delimiter.
+ */
 vector<string> jacobian::tokenize(string in, char delimiter) {
 	vector<string> ret;
 	stringstream check(in);

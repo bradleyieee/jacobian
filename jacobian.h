@@ -2,11 +2,6 @@
  * Jacobian is an abstraction layer for configuing and utilizing a Raspberry PI's
  * GPIO pinouts. 
  * 
- * This software is implemented at the lowest level above the hardware of
- * the Bradley IEEE self-driving RC car. In that context, it serves to decompose high
- * level vector input into two PWM signals and generate them using the PI system clock as well
- * as deliver the logic HIGH and LOW out of the GPIO pins.
- * 
  * @author Ian Wilkey (iwilkey)
  * @since 1.0.0
  */
@@ -55,17 +50,13 @@ namespace jacobian {
 		GIGA = 9,
 		TERA = 12
 	};
-
 	float radixShift(float, int);
-
 	template <typename T>
-		void log(string, T); // With tag.
+		void log(string, T);
 	template <typename T>
-		void log(T); // Without tag.
-
+		void log(T);
 	float timeToDutyCycle(int, float);
 	void waitForSeconds(double);
-	
 	vector<string> tokenize(string, char);
 	
 	/*******************
@@ -85,15 +76,12 @@ namespace jacobian {
 			bool on; // Is the PWM currently producing a logic HIGH or LOW?
 			int frequency; // (hz)
 			double dutyCycle; // (%)
-
 			// Internal clock state.
 			clock_t now = clock(), 
 				last, delta = 0, precisionSince,
 				precisionPeriod;
-
 		public:
 			const int PRECISION = pow(10, (float)MEGA); // The amount of decimal precision of the PWM clock.
-			
 			PWM(int, double);
 			void setDutyCycle(double);
 			void tick(void);

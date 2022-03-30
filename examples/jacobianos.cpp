@@ -1,4 +1,16 @@
-// Compilation: g++ ../jacobian.cpp jacobianos.cpp -o build -lwiringPi -pthread -std=c++11
+/**
+ * This software, JacobianOS, is implemented on a Raspberry PI 3b at the lowest level above the hardware of
+ * the Bradley IEEE self-driving RC car. It serves to decompose high
+ * level vector input into two PWM signals and generate them using the PI system clock as well
+ * as deliver the logic HIGH and LOW out of the GPIO pins. It is also an interface to communicate to the car via console commands and 
+ * JacobianOS Routine Scripts (*.jors), which specify sequences of timed commands to translate the car.
+ *
+ * @since Jacobian 1.4.0
+ * @version 1.1.0
+ * @author Ian Wilkey (iwilkey)
+ * 
+ * Compilation: g++ ../jacobian.cpp jacobianos.cpp -o build -lwiringPi -pthread -std=c++11
+ */
 
 #include <iostream>
 #include <fstream>
@@ -8,6 +20,22 @@
 using namespace std;
 using namespace jacobian;
 
+#define VERSION "1.1.0"
+
+/*******************
+Invokable commands
+/*******************/
+
+/**
+ * Translate the car forwards or backwards declairing direction and percentage speed. 
+ * Command style: drive (f or b, 0 - 100)[%]...
+ * 
+ * @params
+ * 	string args (reference): The non-parsed arguments passed to command.
+ * 	bool dlog (reference): The state of the JacobianOS log option (writing output to console).
+ * 	bool reverse (reference): The state of the reverse mode on the car.
+ * 	PWM drive (reference): The actual PWM object connected to the selected GPIO pinout for the drive motor.
+ */
 void invokeDrive(string & args, bool & dlog, bool & reverse, PWM & drive) {
 	vector<string> argTokens = tokenize(args, ' ');
 	if(argTokens.size() != 2) {
@@ -33,7 +61,8 @@ void invokeDrive(string & args, bool & dlog, bool & reverse, PWM & drive) {
 			log("Success", "The car is now moving forward at " + to_string(percent) + "% of its top speed. Pulse width in ms: " + to_string(time));
 		return;
 	} else {
-		if(!reverse) {				
+		if(!reverse) {	
+
 			// Backwards implementation.
 			// Needs special timed beginning sequence!
 			
@@ -48,11 +77,14 @@ void invokeDrive(string & args, bool & dlog, bool & reverse, PWM & drive) {
 			drive.setDutyCycle(timeToDutyCycle(60, radixShift(1.5, MILLI)));
 			if(dlog) log("Break routine", "Pulsing reset...");
 			waitForSeconds(0.25f);
-			//drive.setDutyCycle(timeToDutyCycle(60, radixShift(1.05f, MILLI)));
-			//if(dlog) log("Break routine", "Setting to break mode now...");
-			//waitForSeconds(0.25f);
+
+			// drive.setDutyCycle(timeToDutyCycle(60, radixShift(1.05f, MILLI)));
+			// if(dlog) log("Break routine", "Setting to break mode now...");
+			// waitForSeconds(0.25f);
+
 			reverse = true;
-			if(dlog) log("Break routine", "Break routine finished.");
+			if(dlog) 
+				log("Break routine", "Break routine finished.");
 		}
 		
 		int percent = stoi(argTokens[1]); // TODO: Make this a float.
@@ -67,6 +99,15 @@ void invokeDrive(string & args, bool & dlog, bool & reverse, PWM & drive) {
 	return;
 }
 
+/**
+ * Rotate the front axis full right to full left specifiying pulse time in milliseconds * 1000.
+ * Command style: steer (1200 - 2000)[ms * 1000]...
+ * 
+ * @params
+ * 	string line (reference): The non-parsed command passed.
+ * 	bool dlog (reference): The state of the JacobianOS log option (writing output to console).
+ * 	PWM steer (reference): The actual PWM object connected to the selected GPIO pinout for the servo motor.
+ */
 void invokeSteer(string & line, bool & dlog, PWM & steer) {
 	vector<string> argTokens = tokenize(line, ' ');
 	if(argTokens.size() != 2) {
@@ -82,6 +123,16 @@ void invokeSteer(string & line, bool & dlog, PWM & steer) {
 	return;
 }
 
+
+/**
+ * Stop car in tracks.
+ * Command style: break (no args)...
+ * 
+ * @params
+ *  bool reverse (reference): The state of the reverse mode on the car.
+ * 	bool dlog (reference): The state of the JacobianOS log option (writing output to console).
+ * 	PWM drive (reference): The actual PWM object connected to the selected GPIO pinout for the drive motor.
+ */
 void invokeBreak(bool & reverse, bool & dlog, PWM & drive) {
 	if(reverse) {
 		drive.setDutyCycle(timeToDutyCycle(60, radixShift(1.6, MILLI)));
@@ -98,6 +149,13 @@ void invokeBreak(bool & reverse, bool & dlog, PWM & drive) {
 	return;
 }
 
+/**
+ * Stop entire JacobianOS.
+ * Command style: stop (no args)...
+ * 
+ * @params
+ *  Controller c (reference): The actual configured Pi3b Controller object attached to car.
+ */
 void invokeStop(Controller & c) {
 	c.setState(false);
 	return;
@@ -223,8 +281,6 @@ static void command(Controller & c, PWM & drive, PWM & steer) {
 			continue;
 		}
 		
-		// Translate the car forwards or backwards declairing direction and percentage speed.
-		// Command style: drive (f or b, 0 - 100)[%]...
 		if(command == "drive") {
 			invokeDrive(args, dlog, reverse, drive);
 			continue;
@@ -294,19 +350,20 @@ static void command(Controller & c, PWM & drive, PWM & steer) {
 // Main instructions.
 int main(int argc, char ** args) {
 	
-	// Init controller.
+	// Init controller...
 	static Controller c("pi3b");
 	c.configurePin(2, "drive", OUTPUT, 1);
 	c.configurePin(4, "steer", OUTPUT, 1);
 	c.configurePin(25, "override", OUTPUT, 1);
 	
-	// Init PWM channels.
+	// Init PWM channels...
 	static PWM driver(60, timeToDutyCycle(60, radixShift(1.5, MILLI))),
 		steer(60, 9.6f);
 	
-	// Start command listener.
+	// Start command listener...
 	thread listener(command, ref(c), ref(driver), ref(steer));
 
+	// Main loop...
 	while(c.isRunning()) {
 		if(!c.isOverridden()) {
 			driver.tick();
@@ -321,6 +378,7 @@ int main(int argc, char ** args) {
 		}
 	}
 
+	// Kill all processes.
 	c.kill();
 	listener.join();
 
