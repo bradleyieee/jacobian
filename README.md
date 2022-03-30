@@ -9,7 +9,7 @@ This software implements the utilities of the Jacobian library on a Raspberry Pi
 as physically delivered out of the configured GPIO pins. It is also an interface to communicate to the car via console commands and 
 JacobianOS Routine Scripts (*.jors), which specify sequences of timed commands to translate the car. Find a list of valid commands below.
 
-    Compilation: $ g++ ../jacobian.cpp jacobianos.cpp -o build -lwiringPi -pthread -std=c++11
+    Compilation: $ g++ ../jacobian.cpp jacobianos.cpp -o build -lwiringPi -pthread
 
     Running: $ ./build
 
