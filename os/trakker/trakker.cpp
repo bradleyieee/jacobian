@@ -5,18 +5,18 @@
 #include <SDL2/SDL.h>
 using namespace std;
 
+const char * TITLE = "Trakker [JacobianOS Utility]";
+const int SCREEN_WIDTH = 800,
+	SCREEN_HEIGHT = SCREEN_WIDTH,
+	PADDING = 50;
+const float FPS = 60.0f;
+
 void waitForSeconds(double s) {
 	static unsigned long long int micros;
 	micros = (int)(s * 1000000);
 	this_thread::sleep_for(chrono::microseconds(micros));
 	return;
 }
-
-const char * TITLE = "Trakker [JacobianOS Utility]";
-const int SCREEN_WIDTH = 800,
-	SCREEN_HEIGHT = SCREEN_WIDTH,
-	PADDING = 50;
-const float FPS = 60.0f;
 
 void simulate(pair<int, int> in) {
 	float percentageX = ((float)((SCREEN_WIDTH / 2) - in.first) / ((SCREEN_WIDTH / 2) - PADDING)) * 100.0f;
@@ -26,11 +26,7 @@ void simulate(pair<int, int> in) {
 	percentageY = (percentageY > 100) ? 100.0f : percentageY;
 	percentageY = (percentageY < -100) ? -100.0f : percentageY;
 
-	// Take percentages and output pulse width times in ms.
-	// 1.0 ms - 2.0 ms drive, 1.5 center. 2.0 fast forward.
-	// 1.2 ms - 2.0 ms steer, 1.6 center, 2 left, 1.2 right.
-	float driveTime = 1.5f; // ms.
-	float steerTime = 1.6f; // ms.
+	float driveTime = 1.5f, steerTime = 1.6f;
 	driveTime = ((2.0f - 1.5f) * (percentageY / 100.0f)) + 1.5f;
 	steerTime = ((2.0f - 1.6f) * (percentageX / 100.0f)) + 1.6f;
 	return;
