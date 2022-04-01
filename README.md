@@ -1,5 +1,5 @@
 # Introduction
-The Bradley IEEE is creating a self-driving RC car using OpenCV, this software, and a modded Traxxas chassis with a Raspberry PI and a 2 by 1 Mux.
+The Bradley University IEEE is creating a self-driving RC car using OpenCV, this software, and a modded Traxxas chassis with a Raspberry PI and a 2 by 1 Mux.
 
 # Jacobian
 The Jacobian library (written in and for C++ developers) is an abstraction layer for configuing and utilizing a Raspberry Pi's GPIO pinouts. 
