@@ -1,9 +1,10 @@
 /**
- * This software, JacobianOS, is implemented on a Raspberry PI 3b at the lowest level above the hardware of
- * the Bradley IEEE self-driving RC car. It serves to decompose high
- * level vector input into two PWM signals and generate them using the PI system clock as well
- * as deliver the logic HIGH and LOW out of the GPIO pins. It is also an interface to communicate to the car via console commands and 
- * JacobianOS Routine Scripts (*.jors), which specify sequences of timed commands to translate the car.
+ * This software implements the utilities of the Jacobian library on a Raspberry Pi at the 
+ * lowest level above the hardware of the Bradley IEEE self-driving RC car. It serves to 
+ * decompose high level vector input into two PWM signals which are generated using the Pi
+ * system clock as well as physically delivered out of the configured GPIO pins. It is also an 
+ * interface to communicate to the car via console commands and JacobianOS Routine Scripts (*.jors), 
+ * which specify sequences of timed commands to translate the car.
  *
  * @since Jacobian 1.4.0
  * @version 1.1.0
