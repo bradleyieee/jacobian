@@ -1,10 +1,10 @@
 # Introduction
 The Bradley IEEE is creating a self-driving RC car using OpenCV, this software, and a modded Traxxas chassis with a Raspberry PI and a 2 by 1 Mux.
 
-# What is "Jacobian"?
+# Jacobian
 The Jacobian library (written in and for C++ developers) is an abstraction layer for configuing and utilizing a Raspberry Pi's GPIO pinouts. 
 
-# What is "JacobianOS"?
+# JacobianOS
 This software implements the utilities of the Jacobian library on a Raspberry Pi at the lowest level above the hardware of the Bradley IEEE self-driving RC car. It serves to decompose high level vector input into two PWM signals which are generated using the Pi system clock as well
 as physically delivered out of the configured GPIO pins. It is also an interface to communicate to the car via console commands and 
 JacobianOS Routine Scripts (*.jors), which specify sequences of timed commands to translate the car. Find a list of valid commands below.
@@ -29,7 +29,12 @@ JacobianOS Routine Scripts (*.jors), which specify sequences of timed commands t
 
 `[Command ready]: override (0 or 1)`: Set the manual override true or false with software. If overridden, the physical controller of the RC car will control its movement.
 
-# What is "JacobianOS Routine Script (*.jors)"?
+# Trakker
+Trakker is an external software utility included in JacobianOS that allows real-time control of the Bradley IEEE car using a vector system. When the external window gets touched, or clicked, a line is drawn from the center of the screen to the cursor postion. Red and blue lines will be drawn along the axis indicating the the magnitude of each component. The Y axis controls the drive speed of the car, the X axis controls the steer of the car. This tool can be used to also crunch high level vector input into pulse width times for each channel. See picture below of intended use.
+
+![Trakker Demonstration](/assets/images/trakkerimage.png)
+
+# JacobianOS Routine Script (*.jors)
 This custom high-level programming language serves to describe the behavior of the Bradley IEEE self-driving car over time. It is written in a linear, time dependent syntax, which will be described below. There are currently only a few simple commands, but over time the language capability will be expanded as new behaviors require more complex description. Find a list of current commands below.
 
 NOTE: Please enter commands and arguments with single spaces in between, no commas or other delimiters.
@@ -81,5 +86,4 @@ log Final break for two seconds...
 break
 wait 2.00
 ~~~
-
   
