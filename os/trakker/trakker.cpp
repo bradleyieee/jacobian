@@ -76,7 +76,7 @@ int main(int argc, char ** args) {
 	while(running) {
 		// Synchronize loop time to frame rate...
 		static unsigned long long int micros;
-		micros = (int)((1 / FPS) * 1000000);
+		micros = (unsigned long long int)((1 / FPS) * 1000000L);
 		this_thread::sleep_for(chrono::microseconds(micros));
 
 		// Poll events start...

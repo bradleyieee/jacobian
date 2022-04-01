@@ -65,7 +65,7 @@ float jacobian::radixShift(float si, int shift) {
  */
 void jacobian::waitForSeconds(double s) {
 	static unsigned long long int micros;
-	micros = (int)(s * 1000000);
+	micros = (unsigned long long int)(s * 1000000L);
 	this_thread::sleep_for(chrono::microseconds(micros));
 	return;
 }
